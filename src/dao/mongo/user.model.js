@@ -29,5 +29,27 @@ const userSchema = new mongoose.Schema({
     last_connection: { type: Date, default: Date.now }
 })
 
+userSchema.statics.toggleUserRole = async function (userId) {
+    try {
+        const user = await this.findById(userId);
+
+        if (!user) {
+            throw new Error('Usuario no encontrado');
+        }
+
+        user.role = user.role === 'user' ? 'premium' : 'user';
+
+        await user.save();
+
+        return user;
+    } catch (error) {
+        throw new Error(`Error al cambiar el rol del usuario: ${error.message}`);
+    }
+};
+
+userSchema.methods.hasUploadedDocuments = function() {
+    return this.documents.length === 3; 
+};
+
 const userModel = mongoose.model(userCollection, userSchema);
 export default userModel;

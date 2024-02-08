@@ -16,6 +16,30 @@ class CartService {
         }
     }
 
+    addToCart = async (productId, user) => {
+        try {
+            const product = await ProductModel.findById(productId);
+            this.checkPremiumUserPermission(user, product);
+
+            const updatedUser = await UserModel.findByIdAndUpdate(
+                user._id,
+                { $addToSet: { cart: { product: productId } } },
+                { new: true }
+            );
+
+            return updatedUser.cart;
+        } catch (error) {
+            console.error('Error al agregar el producto al carrito:', error);
+            throw new Error('Error al agregar el producto al carrito');
+        }
+    }
+
+    checkPremiumUserPermission = (user, product) => {
+        if (user.role === 'premium' && product.owner.toString() === user._id.toString()) {
+            throw new Error('No puedes agregar a tu carrito un producto que te pertenece.');
+        }
+    }
+
     addCart = async (cart) => {
         try {
             const newCart = await this.cartRepository.addCart(cart);

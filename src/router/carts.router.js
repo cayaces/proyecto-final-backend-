@@ -1,5 +1,6 @@
 import express from "express";
 import { addProductInCart, createCart, deleteCart, deleteProductInCart, getCart, getCarts, getProductsInCart, updateCart, updateQuantityOfProduct, purchaseCart } from "../controllers/carts.controller.js";
+import { addToCart } from '../controllers/carts.controller.js';
 
 const CartRouter = express.Router()
 
@@ -13,6 +14,6 @@ CartRouter.post("/:cid/products/:pid", addProductInCart)
 CartRouter.put("/:cid/products/:pid", updateQuantityOfProduct)
 CartRouter.delete("/:cid/products/:pid", deleteProductInCart)
 CartRouter.post("/:cid/purchase", purchaseCart)
-
+CartRouter.post('/add/:productId', addToCart);
 
 export default CartRouter

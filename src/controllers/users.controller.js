@@ -1,4 +1,51 @@
-import User from '../models/user.model.js';
+import User from '../dao/mongo/user.model.js';
+import { profileUpload, productUpload, documentUpload } from '../config/multer.config.js';
+import addUser from "../services/UserService.js"
+import UserService from "../services/UserService.js";
+
+export async function toggleUserRole(req, res) {
+    try {
+        const { userId } = req.params;
+        if (!userId) {
+            return res.status(400).send("Se requiere un ID de usuario válido");
+        }
+
+        const userService = new UserService();
+        const updatedUser = await userService.toggleUserRole(userId);
+        if (!updatedUser) {
+            return res.status(404).send("Usuario no encontrado o no se pudo cambiar el rol");
+        }
+
+        res.status(200).json({ message: 'Rol del usuario cambiado exitosamente', user: updatedUser });
+    } catch (error) {
+        console.error("Error al cambiar el rol del usuario en el controlador:", error);
+        res.status(500).json({ error: 'Error al cambiar el rol del usuario' });
+    }
+}
+
+export async function upgradeToPremium(req, res) {
+    try {
+        const userId = req.params.uid;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        if (!user.hasUploadedDocuments()) {
+            return res.status(400).json({ error: 'El usuario no ha terminado de cargar la documentación requerida' });
+        }
+
+        user.role = 'premium';
+
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error al actualizar usuario a premium:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
 
 export async function registerUser(req, res) {
 
@@ -20,7 +67,6 @@ export async function registerUser(req, res) {
 export async function loginUser(req, res) {
 
     try {
-        // Actualizar last_connection
         const user = req.user;
         user.last_connection = new Date();
         await user.save();
@@ -51,25 +97,18 @@ export async function loginUser(req, res) {
     }
 }
 
-
-// users.controller.js
 export async function getUserPremiumStatus(req, res) {
-    // Lógica para obtener el estado premium del usuario con el ID proporcionado
     try {
-        const userId = req.params.uid; // Paso 1: Obtener el ID del usuario de los parámetros de la solicitud
+        const userId = req.params.uid; 
 
-        // Paso 2: Buscar el usuario en la base de datos
         const user = await User.findById(userId);
 
-        // Paso 3: Verificar la existencia del usuario
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        // Paso 4: Obtener el estado premium del usuario
-        const premiumStatus = user.role === 'premium'; // Suponiendo que el estado premium está basado en el rol del usuario
+        const premiumStatus = user.role === 'premium'; 
 
-        // Paso 5: Responder con el estado premium del usuario
         res.status(200).json({ premium: premiumStatus });
 
     } catch (error) {
@@ -82,22 +121,14 @@ export async function getUserPremiumStatus(req, res) {
 export async function logoutUser(req, res) {
 
     try {
-        // Lógica para cerrar sesión
-        // Actualizar last_connection
+        const user = req.user;
 
-        // Paso 1: Actualizar la última conexión del usuario
-        const user = req.user; // Obtener el usuario actual
-
-        user.last_connection = new Date();// Actualizar la propiedad last_connection
-        await user.save();// Guardar los cambios en la base de datos
- // Paso 2: Destruir la sesión del usuario
+        user.last_connection = new Date()
+        await user.save();
         req.session.destroy()
-        // Paso 3: Redirigir al usuario a la página de inicio de sesión
         res.redirect("/login")
 
     } catch (error) {
-        // Manejo de errores
-        // Paso 4: Manejo de errores
         console.error('Error al cerrar sesión:', error);
         res.status(500).json({ error: 'Error interno del servidor al cerrar sesión' });
     }
@@ -119,7 +150,6 @@ export async function handleGitHubCallback(req, res) {
 
 export async function uploadDocuments(req, res) {
     try {
-        // Obtener el usuario por el UID
         const userId = req.params.uid;
         
         const user = await User.findById(userId);
@@ -128,31 +158,50 @@ export async function uploadDocuments(req, res) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
 
-        // Verificar si se subieron archivos
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ error: 'No se han subido archivos' });
         }
 
-        // Procesar los archivos subidos
         req.files.forEach(file => {
-            // Aquí puedes hacer lo que necesites con cada archivo,
-            // como guardar su información en la base de datos o almacenarlo en el sistema de archivos.
-            // Por ahora, simplemente puedes almacenar el nombre del archivo en el usuario.
             user.documents.push({ name: file.originalname, reference: file.path });
         });
 
-        // Actualizar el estado del usuario para indicar que ha subido documentos
         user.hasUploadedDocuments = true;
 
-        // Guardar los cambios en la base de datos
         await user.save();
 
-        // Responder con el usuario actualizado
         res.status(200).json(user);
     } catch (error) {
         console.error('Error al subir documentos:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
+}
+
+export async function uploadProfilePhoto(req, res) {
+    profileUpload.single('profilePhoto')(req, res, async (err) => {
+        if (err) {
+            console.error('Error al subir foto de perfil:', err);
+            return res.status(500).json({ error: 'Error interno del servidor al subir foto de perfil' });
+        }
+    });
+}
+
+export async function uploadProductImage(req, res) {
+    productUpload.single('productImage')(req, res, async (err) => {
+        if (err) {
+            console.error('Error al subir imagen de producto:', err);
+            return res.status(500).json({ error: 'Error interno del servidor al subir imagen de producto' });
+        }
+    });
+}
+
+export async function uploadDocument(req, res) {
+    documentUpload.single('document')(req, res, async (err) => {
+        if (err) {
+            console.error('Error al subir documento:', err);
+            return res.status(500).json({ error: 'Error interno del servidor al subir documento' });
+        }
+    });
 }
 
 

@@ -1,8 +1,29 @@
 import UserRepository from "../repositories/users.repository.js";
-
+import UserModel from '../dao/mongo/user.model.js';
+import addUser from "../services/UserService.js";
+import User from '../dao/mongo/user.model.js';
 class UserService {
     constructor() {
         this.userRepository = new UserRepository();
+    }
+
+    toggleUserRole = async (userId) => {
+        try {
+            const user = await this.userRepository.toggleUserRole(userId);
+
+            if (!user) {
+                this.handleError("cambiar el rol del usuario", new Error("Usuario no encontrado"));
+            }
+
+            return user;
+        } catch (error) {
+            this.handleError("cambiar el rol del usuario", error);
+        }
+    };
+
+    handleError = (action, error) => {
+        console.error(`Error al ${action}:`, error);
+        throw new Error(`Error al ${action}`);
     }
 
     addUser = async (user) => {
@@ -128,6 +149,10 @@ class UserService {
             return error;
         }
     }
+
+    canCreateProduct = (user) => {
+        return user.role === 'premium';
+    };
 
 }
 

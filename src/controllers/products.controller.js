@@ -1,4 +1,7 @@
+import productModel from '../dao/mongo/product.model.js';
 import ProductService from '../services/ProductService.js';
+import UserService from '../services/UserService.js';
+
 const productService = new ProductService();
 
 export async function getProducts(req, res) {

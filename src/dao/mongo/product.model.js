@@ -7,7 +7,8 @@ const productSchema = new mongoose.Schema({
     description: { type: String, required: true, max: 100 },
     price: { type: Number, required: true },
     category: { type: String, required: true, max: 100 },
-    stock: { type: Number, required: true }
+    stock: { type: Number, required: true },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'users', default: 'admin', required: true }
 })
 
 const productModel = mongoose.model(productCollection, productSchema);

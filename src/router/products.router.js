@@ -11,6 +11,6 @@ productsRouter.delete("/:pid", deleteProduct)
 productsRouter.get("/limit/:limit", getProductByLimit)
 productsRouter.get("/page/:page", getProductByPage)
 productsRouter.get("/query/:query", getProductByQuery)
-
+productsRouter.delete('/:productId', deleteProduct);
 
 export default productsRouter;

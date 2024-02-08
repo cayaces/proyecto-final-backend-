@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h1>FORMULARIO DE CONTACTO</h1>
+
+        <form action="/solicitar-recuperacion" method="post">
+
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" required>
+            
+            <textarea name="mensaje" id="mensaje" cols="30" rows="10" required></textarea>
+
+            <button type="submit">Enviar</button>
+
+        </form>
+    </div>
+</body>
+
+</html>
