@@ -1,0 +1,53 @@
+<nav>
+    <div>
+        <p>Ecommerce Delicioso SexShop</p>
+    </div>
+    <ul>
+        <li><a href="/inicio">Inicio</a></li>
+        <li><a href="/api/products">Productos</a></li>
+        <li><a href="/api/users/profile">Usuario</a></li>
+        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    </ul>
+</nav>
+
+<div>
+    <h1>Lista de Productos</h1>
+</div>
+
+<main>
+
+    <div>
+        <ul>
+            <li>Titulo</li>
+            <li>Descripcion</li>
+            <li>Precio</li>
+        </ul>
+    </div>
+    <div>
+        {{#each products}}
+
+        <form action="/api/products/update/{{this._id}}?_method=PUT" method="POST">
+
+            <input type="hidden" name="_method" value="PUT" />
+            <input type="text" name="name" value="{{this.name}}" />
+            <input type="text" name="description" value="{{this.description}}" />
+            <input type="number" name="price" value="{{this.price}}" />
+
+            <input type="number" name="stock" value="{{this.stock}}" />
+            <input type="text" name="thumbnail" value="{{this.thumbnail}}" />
+            <input type="text" name="owner" value="{{this.owner}}" />
+
+            <button type="submit">Actualizar</button>
+        </form>
+
+        <form action="/api/products/delete/{{this._id}}?_method=DELETE" method="POST">
+
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit">Eliminar</button>
+
+        </form>
+
+        {{/each}}
+    </div>
+
+</main>

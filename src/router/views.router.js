@@ -1,10 +1,11 @@
 import express from "express";
 import authorizeRole from "../config/auth.mongo.config.js";
-import { uploadProfilePhoto, uploadProductImage, uploadDocument } from '../controllers/users.controller.js';
+import { uploadProfilePhoto, uploadProductImage, uploadDocuments } from '../controllers/users.controller.js';
 import __dirname from "../utils.js";
 import path from "path"
 import { loginUser, registerUser } from '../controllers/users.controller.js';
 import { generateToken } from '../services/authJWTService.js';
+import UserRouter from "./user.router.js";
 
 const ViewsRouter = express.Router()
 
@@ -43,11 +44,14 @@ ViewsRouter.post('/register', registerUser, (req, res) => {
     res.json({ token });
 });
 
+// Rutas de usuarios
+ViewsRouter.use('/api/users', UserRouter);
+
 ViewsRouter.post('/upload/profile-photo', uploadProfilePhoto);
 
 ViewsRouter.post('/upload/product-image', uploadProductImage);
 
-ViewsRouter.post('/upload/document', uploadDocument);
-
+//ViewsRouter.post('/upload/document', uploadDocument);
+ViewsRouter.post('/upload/document', uploadDocuments);
 
 export default ViewsRouter

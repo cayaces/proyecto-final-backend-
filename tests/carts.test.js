@@ -1,8 +1,13 @@
 import chai from 'chai';
 import { describe } from 'mocha';
 import supertest from 'supertest';
+import mongoose from 'mongoose';
+//import CartRepository from '../src/repositories/carts.repository.js'
+import Assert from "assert"
+import dotenv from "dotenv"
 
-
+dotenv.config()
+const assert = Assert.strict
 const expect = chai.expect;
 const requester = supertest('http://localhost:8080')
 

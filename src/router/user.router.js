@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { uploadDocuments } from "../controllers/users.controller.js"
+import { renderUploadView, uploadDocuments } from "../controllers/users.controller.js"
 import { upgradeToPremium } from '../controllers/users.controller.js';
 import passport from "passport";
 import { registerUser, loginUser, logoutUser, handleGitHubCallback, getUserPremiumStatus } from "../controllers/users.controller.js";
@@ -105,6 +105,12 @@ UserRouter.get("/current", async (req, res) => {
         res.status(500).json(error);
     }
 })
+
+// Ruta para renderizar la vista de carga de documentos
+UserRouter.get('/:uid/upload', renderUploadView);
+
+// Ruta para subir documentos
+UserRouter.post('/:uid/documents', uploadDocuments);
 
 const upload = multer({ dest: 'uploads/' });
 

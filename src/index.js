@@ -26,14 +26,16 @@ import UserRouter from "./router/user.router.js";
 
 const app = express()
 const PORT = 8080;
+
+
 app.listen(PORT, () => console.log(`Escuchando servidor en puerto ${PORT}`))
 
-
+//swagger
 const swaggerOptions = {
     definition: {
         openapi: '3.0.1',
         info: {
-            title: 'Proyecto final',
+            title: 'Documentacion',
             description: 'Documentación realizada con Swagger'
         }
     },
@@ -44,12 +46,17 @@ const swaggerOptions = {
 const specs = swaggerJSDoc(swaggerOptions)
 app.use("/apidocs", swaggerUIExpress.serve, swaggerUIExpress.setup(specs))
 
-
+//conexion a mongo
 connectMongo()
+
+//conexion a session
 app.use(session(sessionConfig))
+
+//passport
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())

@@ -1,0 +1,17 @@
+<!-- upload.handlebars -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Documentos</title>
+</head>
+<body>
+    <h1>Subir Documentos</h1>
+    <form action="/api/users/{{ userId }}/documents" method="POST" enctype="multipart/form-data">
+        <input type="file" name="documents" multiple>
+        <button type="submit">Subir Documentos</button>
+    </form>
+</body>
+</html>

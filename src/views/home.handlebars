@@ -1,19 +1,39 @@
-<h1>Lista de productos</h1>
-<h2>Bienvenido {{user.name}} {{user.surname}}</h2>
+<nav>
+  <div>
+    <p>Ecommerce Delicioso SexShop</p>
+  </div>
+  <ul>
+    <li><a href="/inicio">Inicio</a></li>
+    <li><a href="/api/products">Productos</a></li>
+    <li><a href="/api/users/profile">Usuario</a></li>
+    <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+  </ul>
+</nav>
+
+
+<h1>Listado de Productos</h1>
+<h2>Bienvenid@ {{user.name}} {{user.surname}}</h2>
 <p>Rol: {{user.role}}</>
 
 <p><a href="/addProducts" class="boton">Agregar otro producto</a></p>
 
-{{#each products}}
-  <div class="divProducto">
+<a href="/api/products/manageProducts" class="boton">Administrar Productos</a>
+
+<div>
+
+  {{#each products}}
+  <div>
     <h2>{{this.name}}</h2>
-    <p>{{this._id}}</p>
-    <p>Autor: {{this.description}} </p>
-    <p>Precio:  ${{this.price}} </p>
-    <p>Categoria: {{this.category}} </p>
+    <p>Descripcion: {{this.description}} </p>
+    <p>Precio: ${{this.price}} </p>
     <p>Stock: {{this.stock}} </p>
     <img src={{this.thumbnail}} alt="" />
-    <a href="/api/products/{{this._id}}" class="boton"><h3>Ver producto</h3></a>
-  </div>
-{{/each}}
 
+    <a href="/api/products/{{this._id}}" class="boton">
+      <h3>Ver producto</h3>
+    </a>
+  </div>
+  {{/each}}
+
+
+</div>

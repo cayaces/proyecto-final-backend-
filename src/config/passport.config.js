@@ -15,7 +15,7 @@ const initializePassport = () => {
 
         try {
             const { name, surname, email, role } = req.body;
-            console.log(`User data: ${name}, ${surname}, ${email}, ${role}`);
+           // console.log(`User data: ${name}, ${surname}, ${email}, ${role}`);
 
             let user = await userService.findEmail({ email: username });
             console.log(`User en passport.use /register: ${user}`);

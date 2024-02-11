@@ -1,15 +1,39 @@
-<div class="divproducto">
+<nav>
+  <div>
+    <p>Ecommerce Delicioso SexShop</p>
+  </div>
+  <ul>
+    <li><a href="/inicio">Inicio</a></li>
+    <li><a href="/api/products">Productos</a></li>
+    <li><a href="/api/users/profile">Usuario</a></li>
+    <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+  </ul>
+</nav>
+
+<div>
+  <h2>Ingresa tu Usuario</h2>
   <form method="POST" action="/api/users/login">
+
     <label for="email">Email</label>
     <input type="email" name="email" required />
+
     <label for="password">Password</label>
     <input type="password" name="password" required />
-    <button type="submit">Login</button>
+
+    <button type="submit">Ingresar</button>
+
   </form>
+
+  <h2>Olvide mi contraseña</h2>
+  <form action="/reset" method="get">
+
+    <button type="submit" class="boton">Restablecer mi contraseña</button>
+
+  </form>
+
 
   <a href="/api/users/github">Ingresar con GitHub</a>
   <a href="/register">Registrarse</a>
 
 </div>
 
-<a href="/inicio"><h2>Volver al inicio</h2></a>

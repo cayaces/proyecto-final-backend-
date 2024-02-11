@@ -1,3 +1,16 @@
+<nav>
+  <div>
+    <p>Ecommerce Delicioso SexShop</p>
+  </div>
+  <ul>
+    <li><a href="/inicio">Inicio</a></li>
+    <li><a href="/api/products">Productos</a></li>
+    <li><a href="/api/users/profile">Usuario</a></li>
+    <li><a href="/api/carts"></a>Carrito</li>
+    <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+  </ul>
+</nav>
+
 <div class="divProducto">
 
   <form method="POST" action="/api/users/register">
@@ -14,7 +27,12 @@
     <input type="password" name="password" />
 
     <label for="role">Role</label>
-    <input type="text" name="role" />
+    {{! <input type="text" name="role" />}}
+    <select name="role" id="role">
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+      <option value="premium">Premium</option>
+    </select>
 
     <button type="submit">Registrarse</button>
   </form>

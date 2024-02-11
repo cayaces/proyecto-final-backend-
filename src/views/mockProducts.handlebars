@@ -1,0 +1,27 @@
+<nav>
+    <div>
+        <p>Ecommerce Delicioso SexShop</p>
+    </div>
+    <ul>
+        <li><a href="/inicio">Inicio</a></li>
+        <li><a href="/api/products">Productos</a></li>
+        <li><a href="/api/users/profile">Usuario</a></li>
+        <li><a href="/api/carts"></a>Carrito</li>
+        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    </ul>
+</nav>
+
+<div> 
+{{#each products}}
+  <div class="divProducto">
+    <h2>{{this.name}}</h2>
+    <p>{{this._id}}</p>
+    <p>Descripcion: {{this.description}} </p>
+    <p>Precio: ${{this.price}} </p>
+    <p>Categoria: {{this.category}} </p>
+    <p>Stock: {{this.stock}} </p>
+    <img src={{this.thumbnail}} alt="" />
+    <a href="/api/products/{{this._id}}" class="boton"><h3>Ver producto</h3></a>
+  </div>
+{{/each}}
+</div>

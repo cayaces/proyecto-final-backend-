@@ -2,6 +2,7 @@ import User from '../dao/mongo/user.model.js';
 import { profileUpload, productUpload, documentUpload } from '../config/multer.config.js';
 import addUser from "../services/UserService.js"
 import UserService from "../services/UserService.js";
+import multer from 'multer';
 
 export async function toggleUserRole(req, res) {
     try {
@@ -148,7 +149,57 @@ export async function handleGitHubCallback(req, res) {
     }
 }
 
-export async function uploadDocuments(req, res) {
+
+/*
+export async function uploadDocument(req, res) {
+    documentUpload.single('document')(req, res, async (err) => {
+        if (err) {
+            console.error('Error al subir documento:', err);
+            return res.status(500).json({ error: 'Error interno del servidor al subir documento' });
+        }
+    });
+} 
+
+const documentUpload = multer({ storage: documentStorage });
+
+export async function documentStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/documents/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});*/
+
+
+/*export async function uploadDocuments(req, res) {
+    try {
+        const userId = req.params.uid;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: 'No se han subido archivos' });
+        }
+
+        req.files.forEach(file => {
+            user.documents.push({ name: file.originalname, reference: file.path });
+        });
+
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error al subir documentos:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}*/
+
+
+/*export async function uploadDocuments(req, res) {
     try {
         const userId = req.params.uid;
         
@@ -175,7 +226,85 @@ export async function uploadDocuments(req, res) {
         console.error('Error al subir documentos:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
+}*/
+/*
+export async function uploadDocuments(req, res) {
+    try {
+        const userId = req.params.uid;
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ error: 'No se han subido archivos' });
+        }
+
+        req.files.forEach(file => {
+            user.documents.push({ name: file.originalname, reference: file.path });
+        });
+
+        user.hasUploadedDocuments = true;
+
+        await user.save();
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error('Error al subir documentos:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
+*/
+export async function uploadDocuments(req, res) {
+    try {
+        const userId = req.params.uid;
+        const user = await User.findById(userId);
+
+        // Verificar si el usuario existe
+        if (!user) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        // Subir el documento utilizando Multer
+        documentUpload.single('document')(req, res, async (err) => {
+            if (err) {
+                console.error('Error al subir documento:', err);
+                return res.status(500).json({ error: 'Error interno del servidor al subir documento' });
+            }
+
+            // Verificar si se han subido archivos en la solicitud
+            if (!req.file) {
+                return res.status(400).json({ error: 'No se ha subido ningún archivo' });
+            }
+
+            // Agregar el documento al usuario y marcar que ha subido documentos
+            user.documents.push({ name: req.file.originalname, reference: req.file.path });
+            user.hasUploadedDocuments = true;
+
+            // Guardar los cambios en el usuario
+            await user.save();
+
+            // Enviar respuesta exitosa con el usuario actualizado
+            res.status(200).json(user);
+        });
+    } catch (error) {
+        // Manejar errores
+        console.error('Error al subir documentos:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+export async function renderUploadView(req, res) {
+    try {
+        const userId = req.params.uid;
+        res.render('upload', { userId });
+    } catch (error) {
+        console.error('Error al renderizar la vista de carga de documentos:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
 
 export async function uploadProfilePhoto(req, res) {
     profileUpload.single('profilePhoto')(req, res, async (err) => {
@@ -195,14 +324,6 @@ export async function uploadProductImage(req, res) {
     });
 }
 
-export async function uploadDocument(req, res) {
-    documentUpload.single('document')(req, res, async (err) => {
-        if (err) {
-            console.error('Error al subir documento:', err);
-            return res.status(500).json({ error: 'Error interno del servidor al subir documento' });
-        }
-    });
-}
 
 
 

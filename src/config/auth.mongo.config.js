@@ -5,13 +5,15 @@ dotenv.config();
 const authorizeRole = (role) => {
     return (req, res, next) => {
         const currentUser = req.user;
-
-        if (!currentUser || currentUser.role !== role) {
+        console.log("Su usuario es:", currentUser)
+        console.log("Su rol autorizado es:", allowedRoles)
+        if (!currentUser || !allowedRoles.includes(currentUser.role)) {
             return res.status(403).send("Acceso no autorizado");
-        }
+    }
         next();
     };
 }
+
 
 export const connectMongo = async () => {
 
@@ -25,4 +27,4 @@ export const connectMongo = async () => {
     }
 }
 
-export  default authorizeRole
+export default authorizeRole

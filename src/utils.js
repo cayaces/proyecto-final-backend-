@@ -16,6 +16,15 @@ export const isValidPassword = (user, password) => {
     }
 }
 
+export const comparePasswords = (newPassword, oldPassword) => {
+    try {
+        return bcrypt.compareSync(newPassword, oldPassword);
+    } catch (error) {
+        console.error("Error in comparePasswords:", error);
+        return false;
+    }
+}
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 

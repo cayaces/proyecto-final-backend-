@@ -1,12 +1,37 @@
+<nav>
+  <div>
+    <p>Ecommerce Delicioso SexShop</p>
+  </div>
+  <ul>
+    <li><a href="/inicio">Inicio</a></li>
+    <li><a href="/api/products">Productos</a></li>
+    <li><a href="/api/users/profile">Usuario</a></li>
+    <li><a href="/api/carts"></a>Carrito</li>
+    <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+  </ul>
+</nav>
+
 <div class="divProducto">
-  <h1>Producto ID: {{product._id}}</h1>
+
+  <h1>Producto: {{product._id}}</h1>
   <h2>Nombre: {{product.name}}</h2>
   <p>Descripcion: {{product.description}} </p>
   <p>Precio: {{product.price}} </p>
   <p>Categoria: {{product.category}} </p>
   <p>Stock: {{product.stock}} </p>
   <img src={{product.thumbnail}} alt="" />
+
   {{#if user}}
-    <button data-product-id="{{this._id}}">Añadir a Carrito</button>
+
+  <div class="botonesCantidad">
+    <button id="disminuyeCantidad" class="boton">-</button>
+    <p id="unidades">0</p>
+    <button id="incrementoCantidad" class="boton">+</button>
+
+    <button id="addToCart" class="boton">Añadir a Carrito</button>
+
+  </div>
+
   {{/if}}
+
 </div>

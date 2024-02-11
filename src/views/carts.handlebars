@@ -1,3 +1,16 @@
+<nav>
+    <div>
+        <p>Ecommerce Delicioso SexShop</p>
+    </div>
+    <ul>
+        <li><a href="/inicio">Inicio</a></li>
+        <li><a href="/api/products">Productos</a></li>
+        <li><a href="/api/users/profile">Usuario</a></li>
+        <li><a href="/api/carts"></a>Carrito</li>
+        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    </ul>
+</nav>
+
 {{#if cart}}
   {{#each cart}}
     <p>Id: {{this.productId}} - Cantidad: {{this.quantity}} Uds</p>
@@ -6,4 +19,3 @@
   <p>El carrito está vacío.</p>
 {{/if}}
 
-<a href="/api/products"><h3>Volver a todos los productos</h3></a>

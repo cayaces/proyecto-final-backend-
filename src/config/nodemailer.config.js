@@ -22,9 +22,10 @@ class EmailService {
                 html
             };
 
-            await transporter.sendMail(mailOptions);
+            await transporter.sendMail(mailOptions)
+            console.log("Correo enviado con exito")
         } catch (error) {
-            console.error('Error al enviar el correo electrónico:', error);
+            console.log('Error al enviar el correo electrónico:', error);
             throw new Error('Error al enviar el correo electrónico');
         }
     }

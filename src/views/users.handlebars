@@ -1,0 +1,50 @@
+<nav>
+    <div>
+        <p>Ecommerce Delicioso SexShop</p>
+    </div>
+    <ul>
+        <li><a href="/inicio">Inicio</a></li>
+        <li><a href="/api/products">Productos</a></li>
+        <li><a href="/api/users/profile">Usuario</a></li>
+        <li><a href="/api/carts"></a>Carrito</li>
+        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    </ul>
+</nav>
+
+<ul>
+
+    {{#each users}}
+    <li>
+        <strong>Nombre:</strong> {{name}} <br>
+        <strong>Email:</strong> {{email}} <br>
+        <strong>Rol Actual:</strong> {{role}} <br>
+        <strong>Ultima conexion:</strong> {{last_connection}}
+        <br>
+        <form action="/api/users/change-role/{{_id}}" method="POST">
+
+            <label for="newRole">Actualizar Rol:</label>
+            <select name="newRole" id="newRole">
+                <option value="user" {{#if isUserRole}}selected{{/if}}>User</option>
+                <option value="admin" {{#if isAdminRole}}selected{{/if}}>Admin</option>
+                <option value="premium" {{#if isPremiumRole}}selected{{/if}}>Premium</option>
+            </select>
+
+            <button type="submit">Actualizar</button>
+
+        </form>
+
+        <form action="/api/users/delete" method="POST">
+            <button type="submit">Eliminar Usuario</button>
+        </form>
+    </li>
+    {{/each}}
+
+</ul>
+
+<p>Opcion para Admin</p>
+<div>
+    <a href="/addProducts" class="boton">Agregar Producto</a>
+    <form action="/api/users/deleteOldUsers" method="POST">
+      <button type="submit" class="boton">Eliminar usuario</button>
+    </form>
+</div>
