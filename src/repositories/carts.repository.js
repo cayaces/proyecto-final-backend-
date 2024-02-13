@@ -19,7 +19,7 @@ class CartRepository extends cartModel {
         }
     }
 
-    getCartById = async (cartId) => {
+    verCarritoById = async (cartId) => {
         try {
             const cart = await cartModel.findById(cartId).populate('products.productId');
             if (!cart) {
@@ -93,7 +93,7 @@ class CartRepository extends cartModel {
         }
     }
 
-    getProductsInCart = async (idCart) => {
+    mostrarProductosEnCarrito = async (idCart) => {
         try {
             const cart = await cartModel.findById(idCart);
             if (!cart) {
@@ -107,7 +107,7 @@ class CartRepository extends cartModel {
         }
     }
 
-    updateQuantityOfProduct = async (idCart, idProd, quantity) => {
+    editarCantidadDeProducto = async (idCart, idProd, quantity) => {
         try {
             const cart = await cartModel.findById(idCart);
             if (!cart) {
@@ -177,7 +177,7 @@ class CartRepository extends cartModel {
         }
     }
 
-    getCarts = async (limit) => {
+    mostrarCarritos = async (limit) => {
 
         let cartsOld = await this.readProducts()
         if (!limit) return cartsOld
@@ -185,7 +185,7 @@ class CartRepository extends cartModel {
         if (cartsOld && limit) return cartsOld.slice(0, limit)
     }
 
-    purchaseCart = async (idCart) => {
+    comprarCarrito = async (idCart) => {
         try {
             const cart = await cartModel.findById(idCart);
 

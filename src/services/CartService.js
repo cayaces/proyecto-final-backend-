@@ -51,9 +51,9 @@ class CartService {
         }
     }
 
-    getCartById = async (cartId) => {
+    verCarritoById = async (cartId) => {
         try {
-            const cart = await this.cartRepository.getCartById(cartId);
+            const cart = await this.cartRepository.verCarritoById(cartId);
 
             if (!cart) {
                 return null;
@@ -94,9 +94,9 @@ class CartService {
         }
     }
 
-    getProductsInCart = async (idCart) => {
+    mostrarProductosEnCarrito = async (idCart) => {
         try {
-            const products = await this.cartRepository.getProductsInCart(idCart);
+            const products = await this.cartRepository.mostrarProductosEnCarrito(idCart);
             if (!products) {
                 return null;
             }
@@ -108,9 +108,9 @@ class CartService {
         }
     }
 
-    updateQuantityOfProduct = async (idCart, idProd, quantity) => {
+    editarCantidadDeProducto = async (idCart, idProd, quantity) => {
         try {
-            const updateQuantity = await this.cartRepository.updateQuantityOfProduct(idCart, idProd, quantity);
+            const updateQuantity = await this.cartRepository.editarCantidadDeProducto(idCart, idProd, quantity);
             if (!updateQuantity) {
                 return null;
             }
@@ -136,9 +136,9 @@ class CartService {
         }
     }
 
-    purchaseCart = async (idCart) => {
+    comprarCarrito = async (idCart) => {
         try {
-            const purchase = await this.cartRepository.purchaseCart(idCart);
+            const purchase = await this.cartRepository.comprarCarrito(idCart);
             if (!purchase) {
                 return null;
             }

@@ -1,0 +1,30 @@
+ <ul>
+      {{#if user}}
+        <li>
+          <a href="/inicio">Inicio</a>
+        </li>
+        <li>
+          <a href="/api/products">Productos</a>
+        </li>
+        <li>
+          <a href="/api/users/profile">Usuario</a>
+        </li>
+        <li>
+          <a href="/api/users/logout">Cerrar sesión</a>
+        </li>
+        <li>
+          <a href="/api/carts/{{cartId}}"></a>
+        </li>
+      {{else}}
+        <a href="/login" class="login">
+          <p>Login</p>
+        </a>
+      {{/if}}
+    </ul>
+
+    <main>
+  <h1>Confirmacion de Compra</h1>
+  <p>Se ha creado exitosamente su orden.</p>
+  <p>Orden de compra: {{ticket}}</p>
+  <p>Los productos son: {{productoComprado}}</p>
+</main>

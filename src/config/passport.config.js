@@ -14,28 +14,28 @@ const initializePassport = () => {
         console.log("Registro de usuario:", req.body);
 
         try {
-            const { name, surname, email, role } = req.body;
+            const { name, surname, email, role } = req.body
            // console.log(`User data: ${name}, ${surname}, ${email}, ${role}`);
 
-            let user = await userService.findEmail({ email: username });
-            console.log(`User en passport.use /register: ${user}`);
+            let user = await userService.findEmail({ email: username })
+           // console.log(`User en passport.use /register: ${user}`);
 
             if (user) {
-                console.log("El usuario ya existe");
-                return done(null, false, { message: "El usuario ya existe" });
+                console.log("El usuario ya existe")
+                return done(null, false, { message: "El usuario ya existe" })
             }
 
-            const hashedPassword = await createHash(password);
-            console.log("Hashed password:", hashedPassword);
+            const hashedPassword = await createHash(password)
+            console.log("Hashed password:", hashedPassword)
 
-            const newUser = { name, surname, email, password: hashedPassword, role };
-            console.log("Nuevo usuario:", newUser);
+            const newUser = { name, surname, email, password: hashedPassword, role }
+            console.log("Nuevo usuario:", newUser)
 
             let result = await userService.addUser(newUser);
             return done(null, result);
 
         } catch (error) {
-            console.log("Error al registrar usuario:", error);
+           // console.log("Error al registrar usuario:", error);
             return done("Error al obtener el usuario", error);
         }
     }))
@@ -60,7 +60,7 @@ const initializePassport = () => {
 
         try {
             const user = await userService.findEmail({ email: username });
-            console.log("User found:", user);
+            console.log("Usuario encontrado:", user);
 
             if (!user) {
                 return done(null, false, { message: "Usuario no encontrado" });
@@ -72,6 +72,8 @@ const initializePassport = () => {
             if (!isValid) {
                 return done(null, false, { message: "Contraseña inválida" });
             }
+            user.last_connection = new Date();
+            await userService.updateUser(user._id, user);
             console.log("Usuario autenticado:", user);
             return done(null, user);
 
@@ -113,7 +115,7 @@ const initializePassport = () => {
                 }
 
             } else {
-                return done(null, false, { message: "User not found in GitHub" });
+                return done(null, false, { message: "El usuario no se registra en GitHub" });
             }
 
         } catch (error) {

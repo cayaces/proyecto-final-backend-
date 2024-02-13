@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 dotenv.config();
 
-const authorizeRole = (role) => {
+const authorizeRole = (allowedRoles) => {
     return (req, res, next) => {
         const currentUser = req.user;
-        console.log("Su usuario es:", currentUser)
-        console.log("Su rol autorizado es:", allowedRoles)
+       // console.log("Su usuario es:", currentUser)
+       // console.log("Su rol autorizado es:", allowedRoles)
         if (!currentUser || !allowedRoles.includes(currentUser.role)) {
             return res.status(403).send("Acceso no autorizado");
     }

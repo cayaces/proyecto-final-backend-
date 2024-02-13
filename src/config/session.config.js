@@ -1,6 +1,6 @@
-import MongoStore from "connect-mongo";
-import dotenv from "dotenv";
-dotenv.config();
+import MongoStore from "connect-mongo"
+import dotenv from "dotenv"
+dotenv.config()
 
 const sessionConfig = {
     store: MongoStore.create({
@@ -13,4 +13,4 @@ const sessionConfig = {
     saveUninitialized: false
 }
 
-export default sessionConfig;
+export default sessionConfig
