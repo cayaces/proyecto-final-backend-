@@ -1,5 +1,22 @@
+<nav>
+    <div>
+        <p>Ecommerce Delicioso SexShop</p>
+    </div>
+    <ul>
+        {{#if user}}
+        <li><a href="/inicio">Inicio</a></li>
+        <li><a href="/api/products">Productos</a></li>
+        <li><a href="/api/users/profile">Usuario</a></li>
+        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+        <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+        {{else}}
+        <a href="/login" class="login">
+            <p>Ingresar</p>
+        </a>
+        {{/if}}
+    </ul>
+</nav>
 <div>
-
 <h1>Producto Creado</h1>
 
 <p>Producto creado con exito.</p>
@@ -7,6 +24,6 @@
 <p>Descripción: {{description}}</p>
 <p>Precio: {{price}}</p>
 <p>Stock: {{stock}}</p>
-<p>Imagen: {{image}}</p>
-
+<img src="{{thumbnail}}" alt="" />
+  <p>Owner: {{owner}}</p>
 </div>

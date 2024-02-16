@@ -1,4 +1,5 @@
 import userModel from "../dao/mongo/user.model.js";
+import cartModel from "../dao/mongo/cart.model.js";
 
 class UserRepository extends userModel {
     constructor() {
@@ -22,7 +23,10 @@ class UserRepository extends userModel {
     addUser = async (user) => {
         try {
             const newUser = await userModel.create(user);
-            return newUser;
+            const newCart = await cartModel.create({ userId: newUser._id, products: [] });
+            newUser.cart = newCart._id
+            await newUser.save()
+            return newUser
 
         } catch (error) {
             console.log("Error al agregar usuario: ");
@@ -36,7 +40,7 @@ class UserRepository extends userModel {
             return users;
 
         } catch (error) {
-            console.log("Error al obtener usuarios: ");
+            req.logger.error("Error al obtener usuarios: ");
             return error;
         }
     }
@@ -47,7 +51,7 @@ class UserRepository extends userModel {
             return user;
 
         } catch (error) {
-            console.log("Error al obtener usuario por id: ");
+            req.logger.error("Error al obtener usuario por id: ");
             return error;
         }
     }
@@ -58,7 +62,7 @@ class UserRepository extends userModel {
             return user;
 
         } catch (error) {
-            console.log("Error al obtener usuario por email: ");
+            req.logger.error("Error al obtener usuario por email: ");
         }
     }
 
@@ -68,7 +72,7 @@ class UserRepository extends userModel {
             return updatedUser;
 
         } catch (error) {
-            console.log("Error al actualizar usuario: ");
+            req.logger.error("Error al actualizar usuario: ");
             return error;
         }
     }
@@ -77,9 +81,8 @@ class UserRepository extends userModel {
         try {
             const deletedUser = await userModel.findByIdAndDelete(id);
             return deletedUser;
-
-        } catch (error) {
-            console.log("Error al eliminar usuario: ");
+     } catch (error) {
+            req.logger.error("Error al eliminar usuario: ");
             return error;
         }
     }
@@ -87,11 +90,10 @@ class UserRepository extends userModel {
     validateUser = async (email, password) => {
         try {
             const user = await userModel.findOne({ email: email, password: password });
-            return user;
-
+            return user
         } catch (error) {
-            console.log("Error al validar usuario: ");
-            return error;
+            req.logger.error("Error al validar usuario: ");
+            return error
         }
     }
 
@@ -101,7 +103,7 @@ class UserRepository extends userModel {
             return email;
 
         } catch (error) {
-            console.error("No se encontro el email: ", error);
+            req.logger.error("No se encontro el email: ", error);
             return error;
         }
     }

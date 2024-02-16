@@ -2,6 +2,8 @@ import UserRepository from "../repositories/users.repository.js";
 import UserModel from '../dao/mongo/user.model.js';
 import addUser from "../services/UserService.js";
 import User from '../dao/mongo/user.model.js';
+import logger from "../logger.js";
+
 class UserService {
     constructor() {
         this.userRepository = new UserRepository();
@@ -35,7 +37,7 @@ class UserService {
             return newUser;
 
         } catch (error) {
-            console.log("Error al agregar usuario: ", error);
+            req.logger.error("Error al agregar usuario: ", error);
             return error;
         }
     }
@@ -49,7 +51,7 @@ class UserService {
             return users;
 
         } catch (error) {
-            console.log("Error al obtener usuarios: ", error);
+            req.logger.error("Error al obtener usuarios: ", error);
             return error;
         }
     }
@@ -63,7 +65,7 @@ class UserService {
             return user;
 
         } catch (error) {
-            console.log("Error al obtener usuario por id: ", error);
+            req.logger.error ("Error al obtener usuario por id: ", error);
             return error;
         }
     }
@@ -77,7 +79,7 @@ class UserService {
             return user;
 
         } catch (error) {
-            console.log("Error al obtener usuario por email: ", error);
+            req.logger.error("Error al obtener usuario por email: ", error);
         }
     }
 
@@ -87,10 +89,9 @@ class UserService {
             if (!updatedUser) {
                 return "No se pudo actualizar el usuario";
             }
-            return updatedUser;
-
+            return updatedUser
         } catch (error) {
-            console.log("Error al actualizar usuario: ", error);
+            req.logger.error("Error al actualizar usuario: ", error);
             return error;
         }
     }
@@ -104,7 +105,7 @@ class UserService {
             return deletedUser;
 
         } catch (error) {
-            console.log("Error al eliminar usuario: ", error);
+            req.logger.error("Error al eliminar usuario: ", error);
             return error;
         }
     }
@@ -118,7 +119,7 @@ class UserService {
             return user;
 
         } catch (error) {
-            console.log("Error al validar usuario: ", error);
+            req.logger.error("Error al validar usuario: ", error);
             return error;
         }
     }
@@ -131,7 +132,7 @@ class UserService {
             }
             return user;
         } catch (error) {
-            console.error("Error al encontrar el usuario: ", error);
+            req.logger.error("Error al encontrar el usuario: ", error);
             return error;
         }
     }
@@ -145,14 +146,14 @@ class UserService {
             return email
 
         } catch (error) {
-            console.error("No se pudo encontrar el usuario: ", error);
+            req.logger.error("No se pudo encontrar el usuario: ", error);
             return error;
         }
     }
-
+/*
     canCreateProduct = (user) => {
         return user.role === 'premium';
-    };
+    };*/
 
 }
 

@@ -1,21 +1,45 @@
 <nav>
-    <div>
-        <p>Ecommerce Delicioso SexShop</p>
-    </div>
-    <ul>
-        <li><a href="/inicio">Inicio</a></li>
-        <li><a href="/api/products">Productos</a></li>
-        <li><a href="/api/users/profile">Usuario</a></li>
-        <li><a href="/api/carts"></a>Carrito</li>
-        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
-    </ul>
+  <div>
+    <p>Ecommerce Delicioso SexShop</p>
+  </div>
+  <ul>
+    {{#if user}}
+    <li><a href="/inicio">Inicio</a></li>
+    <li><a href="/api/products">Productos</a></li>
+    <li><a href="/api/users/profile">Usuario</a></li>
+    <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+    {{else}}
+    <a href="/login" class="login">
+      <p>Login</p>
+    </a>
+    {{/if}}
+  </ul>
 </nav>
 
-{{#if cart}}
-  {{#each cart}}
-    <p>Id: {{this.productId}} - Cantidad: {{this.quantity}} Uds</p>
-  {{/each}}
-{{else}}
-  <p>El carrito está vacío.</p>
-{{/if}}
+<div>
+  <h1>Ecommerce</h1>
+  {{#if cart}}
+  <div>
+    {{#each products}}
+    <div class="filasTabla">
+      <p>{{this.name}}</p>
+      <p>{{this.quantity}} Uds </p>
+      <p>{{this.price}} CLP </p>
+      <p>{{this.total}} CLP </p>
+    </div>
+    {{/each}}
+  </div>
 
+  {{else}}
+  <p>El carrito está vacío.</p>
+  {{/if}}
+</div>
+
+<div>
+  <form method="post" action="/api/carts/{{cartId}}/purchase">
+
+    <button type="submit" class="boton">Finalizar Compra</button>
+
+  </form>
+</div>

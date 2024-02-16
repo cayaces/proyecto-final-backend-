@@ -1,17 +1,37 @@
-<!-- upload.handlebars -->
+<nav>
+    <div>
+        <p>Ecommerce Delicioso SexShop</p>
+    </div>
+    <ul>
+        {{#if user}}
+        <li><a href="/inicio">Inicio</a></li>
+        <li><a href="/api/products">Productos</a></li>
+        <li><a href="/api/users/profile">Usuario</a></li>
+        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+        <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+        {{else}}
+        <a href="/login" class="login">
+            <p>Ingresar</p>
+        </a>
+        {{/if}}
+    </ul>
+</nav>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Documentos</title>
-</head>
-<body>
+<div>
     <h1>Subir Documentos</h1>
-    <form action="/api/users/{{ userId }}/documents" method="POST" enctype="multipart/form-data">
-        <input type="file" name="documents" multiple>
-        <button type="submit">Subir Documentos</button>
+    <h3>Usuario: {{user.name}}</h3>
+
+    <form action="/api/users/{{uid}}/documents" method="post" enctype="multipart/form-data" class="formDocuments">
+
+        <input type="hidden" name="uid" value="{{user._id}}" />
+
+        <label for="identificacion">Documento de Identidad</label>
+        <input type="file" name="documents" id="identificacion" required />
+
+        <label for="estadoCuenta">Estado de Cuenta</label>
+        <input type="file" name="documents" id="estadoCuenta" required />
+
+        <button type="submit" class="boton">Subir</button>
+
     </form>
-</body>
-</html>
+</div>

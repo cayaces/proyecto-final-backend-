@@ -9,10 +9,10 @@ import dotenv from 'dotenv';
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import bodyParser from "body-parser"
+import loggerMiddleware from "./loggerMiddleware.js";
+//import specs from "./config/swagger.config.js";
 import nodemailer from "nodemailer"
-import { recuperacionRouter } from "./router/nodemailer.router.js"
-import { verificarExpiracionRouter }from "./router/nodemailer.router.js";
-import { resetPasswordRouter } from "./router/nodemailer.router.js"
+import { recuperacionRouter, verificarExpiracionRouter, resetPasswordRouter } from "./router/nodemailer.router.js"
 import swaggerJSDoc from 'swagger-jsdoc'
 import swaggerUIExpress from 'swagger-ui-express'
 import ProtectedRouter from "./router/authJWT.router.js"
@@ -24,11 +24,10 @@ import productsRouter from "./router/products.router.js";
 import cartsRouter from "./router/carts.router.js";
 import UserRouter from "./router/user.router.js";
 
+
 const app = express()
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
-
-app.listen(PORT, () => console.log(`Escuchando servidor en puerto ${PORT}`))
 
 //swagger
 const swaggerOptions = {
@@ -60,24 +59,37 @@ app.use(passport.session())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
 app.engine("handlebars", engine())
 app.set("view engine", "handlebars")
 app.set("views", path.resolve(__dirname + "/views"))
+//logger
+app.use(loggerMiddleware)
 
 app.use("/", express.static(__dirname + "/public"))
 
-app.use("/", resetPasswordRouter); 
-app.use("/recuperacion", recuperacionRouter);
-app.use("/", verificarExpiracionRouter);
 app.use("/", ViewsRouter)
 app.use("/api/users", UserRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api/products", productsRouter)
 app.use('/protected', ProtectedRouter);
+app.use("/", resetPasswordRouter); 
+app.use("/recuperacion", recuperacionRouter);
+app.use("/", verificarExpiracionRouter);
 
+app.get('/loggerTest', function (req, res) {
+    req.logger.error("Mensaje de error")
+    req.logger.warn("Mensaje de advertencia")
+    req.logger.info("Mensaje de información")
+    req.logger.http("Mensaje http")
+    req.logger.verbose("Mensaje verbose")
+    req.logger.debug("Mensaje debug")
+    req.logger.silly("Mensaje silly")
+    res.send('Hello World');
+})
 
-
-
-
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT}`)
+})
 
 

@@ -4,7 +4,6 @@ class CartService {
     constructor() {
         this.cartRepository = new CartRepository();
     }
-
     readCarts = async () => {
         try {
             const carts = await this.cartRepository.readCarts();
@@ -15,7 +14,41 @@ class CartService {
             return null;
         }
     }
+    addCart = async (cart) => {
+        try {
+            const newCart = await this.cartRepository.addCart(cart);
+            return newCart
+        } catch (error) {
+            console.error('Error al guardar el carrito:', error);
+            return null
+        }
+    }
+    verCarritoById = async (cartId) => {
+        try {
+            const cart = await this.cartRepository.verCarritoById(cartId);
 
+            if (!cart) {
+                return null;
+            }
+            return cart;
+
+        } catch (error) {
+            console.error('Error al buscar el carrito por ID:', error);
+            return null;
+        }
+    }
+    addProductInCart = async (idCart, idProd, quantity) => {
+        try {
+            const newProduct = await this.cartRepository.addProductInCart(idCart, idProd, quantity)
+            if (!newProduct) {
+                return null;
+            }
+            return newProduct;
+        } catch (error) {
+            console.error('Error al guardar el producto en el carrito:', error);
+            return null;
+        }
+    }
     addToCart = async (productId, user) => {
         try {
             const product = await ProductModel.findById(productId);
@@ -37,46 +70,6 @@ class CartService {
     checkPremiumUserPermission = (user, product) => {
         if (user.role === 'premium' && product.owner.toString() === user._id.toString()) {
             throw new Error('No puedes agregar a tu carrito un producto que te pertenece.');
-        }
-    }
-
-    addCart = async (cart) => {
-        try {
-            const newCart = await this.cartRepository.addCart(cart);
-            return newCart;
-
-        } catch (error) {
-            console.error('Error al guardar el carrito:', error);
-            return null;
-        }
-    }
-
-    verCarritoById = async (cartId) => {
-        try {
-            const cart = await this.cartRepository.verCarritoById(cartId);
-
-            if (!cart) {
-                return null;
-            }
-            return cart;
-
-        } catch (error) {
-            console.error('Error al buscar el carrito por ID:', error);
-            return null;
-        }
-    }
-
-    addProductInCart = async (idCart, idProd) => {
-        try {
-            const newProduct = await this.cartRepository.addProductInCart(idCart, idProd);
-            if (!newProduct) {
-                return null;
-            }
-            return newProduct;
-
-        } catch (error) {
-            console.error('Error al guardar el producto en el carrito:', error);
-            return null;
         }
     }
 
@@ -110,13 +103,15 @@ class CartService {
 
     editarCantidadDeProducto = async (idCart, idProd, quantity) => {
         try {
-            const updateQuantity = await this.cartRepository.editarCantidadDeProducto(idCart, idProd, quantity);
+            const prevProduct = await this.cartRepository.existProductInCart(idCart, idProd);
+            let prevQuantity = prevProduct.quantity;
+            let newQuantity = prevQuantity + quantity;
+            const updateQuantity = await this.cartRepository.editarCantidadDeProducto(idCart, idProd, newQuantity);
             if (!updateQuantity) {
                 return null;
             }
-            return updateQuantity;
-
-        } catch (error) {
+            return updateQuantity
+         } catch (error) {
             console.error('Error:', error);
             return null;
         }
@@ -124,15 +119,14 @@ class CartService {
 
     deleteProductInCart = async (idCart, idProd) => {
         try {
-            const deleteProduct = await this.cartRepository.deleteProductInCart(idCart, idProd);
+            const deleteProduct = await this.cartRepository.deleteProductInCart(idCart, idProd)
             if (!deleteProduct) {
                 return null;
             }
-            return deleteProduct;
-
+            return deleteProduct
         } catch (error) {
-            console.error('Error:', error);
-            return null;
+            console.error('Error:', error)
+            return null
         }
     }
 
@@ -142,7 +136,6 @@ class CartService {
             if (!purchase) {
                 return null;
             }
-
         } catch (error) {
             console.error('Error:', error);
             return null;

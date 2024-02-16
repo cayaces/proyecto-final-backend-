@@ -3,21 +3,27 @@
     <p>Ecommerce Delicioso SexShop</p>
   </div>
   <ul>
+    {{#if user}}
     <li><a href="/inicio">Inicio</a></li>
     <li><a href="/api/products">Productos</a></li>
     <li><a href="/api/users/profile">Usuario</a></li>
     <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+    {{else}}
+    <a href="/login" class="login">
+      <p>Login</p>
+    </a>
+    {{/if}}
   </ul>
 </nav>
 
 
 <h1>Listado de Productos</h1>
 <h2>Bienvenid@ {{user.name}} {{user.surname}}</h2>
-<p>Rol: {{user.role}}</>
-
+{{#if isAuthorized}}
 <p><a href="/addProducts" class="boton">Agregar otro producto</a></p>
-
 <a href="/api/products/manageProducts" class="boton">Administrar Productos</a>
+{{/if}}
 
 <div>
 

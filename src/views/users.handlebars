@@ -3,48 +3,57 @@
         <p>Ecommerce Delicioso SexShop</p>
     </div>
     <ul>
+        {{#if user}}
         <li><a href="/inicio">Inicio</a></li>
         <li><a href="/api/products">Productos</a></li>
         <li><a href="/api/users/profile">Usuario</a></li>
-        <li><a href="/api/carts"></a>Carrito</li>
         <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+        <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+        {{else}}
+        <a href="/login" class="login">
+            <p>Ingresar</p>
+        </a>
+        {{/if}}
     </ul>
 </nav>
+<div>Usurio Registrado</div>
 
-<ul>
-
+<div>
+    <div>
+        <div>Nombre</div>
+        <div>Email</div>
+        <div>Ultima conexión</div>
+        <div>Rol Actual</div>
+        <div>Actualizar Rol</div>
+        <div>Eliminar Usuario</div>
+    </div>
     {{#each users}}
-    <li>
-        <strong>Nombre:</strong> {{name}} <br>
-        <strong>Email:</strong> {{email}} <br>
-        <strong>Rol Actual:</strong> {{role}} <br>
-        <strong>Ultima conexion:</strong> {{last_connection}}
-        <br>
+    <div>
+        <div>{{name}}</div>
+        <div>{{email}}</div>
+        <div>{{role}}</div>
+        <div>{{last_connection}}</div>
         <form action="/api/users/change-role/{{_id}}" method="POST">
-
-            <label for="newRole">Actualizar Rol:</label>
-            <select name="newRole" id="newRole">
-                <option value="user" {{#if isUserRole}}selected{{/if}}>User</option>
-                <option value="admin" {{#if isAdminRole}}selected{{/if}}>Admin</option>
-                <option value="premium" {{#if isPremiumRole}}selected{{/if}}>Premium</option>
+            <select name="newRole">
+                <option value="user" {{#if this.isUserRole}}selected{{/if}}>Usuario</option>
+                <option value="admin" {{#if this.isAdminRole}}selected{{/if}}>Administrador</option>
+                <option value="premium" {{#if this.isPremiumRole}}selected{{/if}}>Premium</option>
             </select>
-
             <button type="submit">Actualizar</button>
-
         </form>
-
         <form action="/api/users/delete" method="POST">
             <button type="submit">Eliminar Usuario</button>
         </form>
-    </li>
+    </div>
     {{/each}}
 
-</ul>
+</div>
 
-<p>Opcion para Admin</p>
+
+<p>Solo Administradores</p>
 <div>
     <a href="/addProducts" class="boton">Agregar Producto</a>
     <form action="/api/users/deleteOldUsers" method="POST">
-      <button type="submit" class="boton">Eliminar usuario</button>
+        <button type="submit" class="boton">Eliminar usuario</button>
     </form>
 </div>

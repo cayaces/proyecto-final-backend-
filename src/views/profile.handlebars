@@ -3,24 +3,30 @@
     <p>Ecommerce Delicioso SexShop</p>
   </div>
   <ul>
+    {{#if user}}
     <li><a href="/inicio">Inicio</a></li>
     <li><a href="/api/products">Productos</a></li>
     <li><a href="/api/users/profile">Usuario</a></li>
-    <li><a href="/api/carts"></a>Carrito</li>
     <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+    {{else}}
+    <a href="/login" class="login">
+      <p>Ingresar</p>
+    </a>
+    {{/if}}
   </ul>
 </nav>
 
 <div class="divproducto">
-
   <h1>Perfil de {{user.role}}</h1>
-  <h3><a href="/api/users/logout">Cerrar sesión</a></h3>
   <p>Email: {{user.email}}</p>
   <p>Id: {{user.id}}</p>
+  <div>
 
+  </div>
+  <a href="/api/users/premium/{{user.id}}">Cambiar role</a>
 </div>
 <div>
-  <a href="/api/users/premium/{{user.id}}">Cambiar role</a>
 
   {{#if isAuthorized}}
   <a href="/addProducts" class="boton">Crear producto</a>

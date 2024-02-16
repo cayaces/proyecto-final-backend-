@@ -6,17 +6,16 @@ class ProductService {
         this.productRepository = new ProductRepository();
     }
 
-    getProducts = async (limit) => {
+    getProducts = async (limit,page, sort, query) => {
         try {
-            const products = await this.productRepository.getProducts(limit);
-            return products;
-
+            const products = await this.productRepository.getProducts(limit, page, sort, query);
+            return products
         } catch (error) {
             console.error('Error al buscar los productos:', error);
             return null;
         }
-    }
-
+    }   
+/*
     createProduct = async ({ name, description, price, owner, userEmail }) => {
         try {
             const ownerId = owner ? owner._id : 'admin';
@@ -31,7 +30,6 @@ class ProductService {
             throw new Error("Error al agregar producto");
         }
     }
-
 
     sendPremiumUserEmail = async (userEmail, productName) => {
         try {
@@ -49,6 +47,12 @@ class ProductService {
         }
     }
 
+    checkUserPermission = (user) => {
+        if (user.role !== 'admin') {
+           throw new Error('No tienes permisos de administrador para realizar esta acción.');
+       }
+   }
+*/
     addProduct = async (product) => {
         try {
             const newProduct = await this.productRepository.addProduct(product);
@@ -97,55 +101,7 @@ class ProductService {
         }
     }
 
-    checkUserPermission = (user) => {
-        if (user.role !== 'admin') {
-           throw new Error('No tienes permisos de administrador para realizar esta acción.');
-       }
-   }
-
-    getProductByLimit = async (limit) => {
-        try {
-            const products = await this.productRepository.getProductByLimit(limit);
-            return products;
-
-        } catch (error) {
-            console.error('Error al buscar los productos:', error);
-            return null;
-        }
-    }
-
-    getProductByPage = async (page) => {
-        try {
-            const products = await this.productRepository.getProductByPage(page);
-            return products;
-
-        } catch (error) {
-            console.error('Error al buscar los productos:', error);
-            return null;
-        }
-    }
-
-    getProductByQuery = async (query) => {
-        try {
-            const products = await this.productRepository.getProductByQuery(query);
-            return products;
-
-        } catch (error) {
-            console.error('Error al buscar los productos:', error);
-            return null;
-        }
-    }
-
-    getProductMaster = async (page, limit, category, availability, sortOrder) => {
-        try {
-            const products = await this.productRepository.getProductMaster(page, limit, category, availability, sortOrder);
-            return products;
-            
-        } catch (error) {
-            console.error('Error al buscar los productos:', error);
-            return null;
-        }
-    }
+   
 }
 
 export default ProductService

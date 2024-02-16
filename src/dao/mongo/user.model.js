@@ -1,25 +1,13 @@
-import mongoose from "mongoose";
-
-const userCollection = "users";
-
+import mongoose from "mongoose"
+const userCollection = "users"
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true, max: 100 },
     surname: { type: String, required: false, max: 100 },
     email: { type: String, required: true, max: 100 },
     age: { type: Number, required: false, max: 100 },
     password: { type: String, required: false, max: 100 },
-    cart: [
-        {
-            type: [
-                {
-                    cart: {
-                        type: mongoose.Schema.Types.ObjectId, ref: 'carts'
-                    }
-                }
-            ]
-        }
-    ],
-    role: { type: String, required: true, max: 100 },
+    cart: { type: mongoose.Schema.Types.ObjectId, ref: 'carts',unique: true},
+    role: { type: String, required: true, max: 100, enum: ['user', 'admin', 'premium'], default: 'user' },
     documents: [
         {
             name: { type: String, required: true },
@@ -32,15 +20,11 @@ const userSchema = new mongoose.Schema({
 userSchema.statics.toggleUserRole = async function (userId) {
     try {
         const user = await this.findById(userId);
-
         if (!user) {
             throw new Error('Usuario no encontrado');
         }
-
         user.role = user.role === 'user' ? 'premium' : 'user';
-
         await user.save();
-
         return user;
     } catch (error) {
         throw new Error(`Error al cambiar el rol del usuario: ${error.message}`);
@@ -52,4 +36,4 @@ userSchema.methods.hasUploadedDocuments = function() {
 };
 
 const userModel = mongoose.model(userCollection, userSchema);
-export default userModel;
+export default userModel

@@ -7,5 +7,7 @@ export default class ProductDTO {
         this.category = product.category || "Otros";
         this.stock = product.stock || 0;
         this.thumbnail = product.thumbnail || "";
+        this.owner = product.owner || "";
+        this._id = product._id.toString() || "";
     }
 }

@@ -1,7 +1,25 @@
+<nav>
+    <div>
+        <p>Ecommerce Delicioso SexShop</p>
+    </div>
+    <ul>
+        {{#if user}}
+        <li><a href="/inicio">Inicio</a></li>
+        <li><a href="/api/products">Productos</a></li>
+        <li><a href="/api/users/profile">Usuario</a></li>
+        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+        <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+        {{else}}
+        <a href="/login" class="login">
+            <p>Login</p>
+        </a>
+        {{/if}}
+    </ul>
+</nav>
+
 <div>
-<h1>CORREO ENVIADO CON EXITO</h1>
+    <h1>CORREO ENVIADO CON EXITO</h1>
 </div>
 <div>
     <p>Se envio un enlace a su correo para restablecer su contraseña</p>
 </div>
-

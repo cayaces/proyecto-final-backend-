@@ -1,13 +1,20 @@
 <nav>
-    <div>
-        <p>Ecommerce Delicioso SexShop</p>
-    </div>
-    <ul>
-        <li><a href="/inicio">Inicio</a></li>
-        <li><a href="/api/products">Productos</a></li>
-        <li><a href="/api/users/profile">Usuario</a></li>
-        <li><a href="/api/users/logout">Cerrar Sesion</a></li>
-    </ul>
+  <div>
+    <p>Ecommerce Delicioso SexShop</p>
+  </div>
+  <ul>
+    {{#if user}}
+    <li><a href="/inicio">Inicio</a></li>
+    <li><a href="/api/products">Productos</a></li>
+    <li><a href="/api/users/profile">Usuario</a></li>
+    <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+    {{else}}
+    <a href="/login" class="login">
+      <p>Login</p>
+    </a>
+    {{/if}}
+  </ul>
 </nav>
 
 <div>
@@ -16,7 +23,6 @@
   <p>Role: {{user.role}}</p>
   <p>Edad: {{user.age}}</p>
   <p>Email: {{user.email}}</p>
-  <p>Password: {{user.password}}</p>
   <p>Carrito: {{user.cart}}</p>
 
 </div>

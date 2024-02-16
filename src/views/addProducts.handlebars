@@ -7,9 +7,14 @@
         <li><a href="/api/products">Productos</a></li>
         <li><a href="/api/users/profile">Usuario</a></li>
         <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+        <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+
     </ul>
 </nav>
 
+<h1>
+    Ingresa un producto
+</h1>
 
 <form method="POST" action="/api/products">
     <label for="name">Nombre del Producto</label>
@@ -28,8 +33,6 @@
     <select name="category">
         <option value="1">1</option>
         <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
     </select>
 
     <label for="thumbnail">Foto del Producto</label>

@@ -3,38 +3,43 @@
     <p>Ecommerce Delicioso SexShop</p>
   </div>
   <ul>
+    {{#if user}}
     <li><a href="/inicio">Inicio</a></li>
     <li><a href="/api/products">Productos</a></li>
     <li><a href="/api/users/profile">Usuario</a></li>
-    <li><a href="/api/carts"></a>Carrito</li>
     <li><a href="/api/users/logout">Cerrar Sesion</a></li>
+    <li><a href="/api/carts/{{cartId}}">Carrito</a></li>
+    {{else}}
+    <a href="/login" class="login">
+      <p>Ingresar</p>
+    </a>
+    {{/if}}
   </ul>
 </nav>
 
 <div class="divProducto">
 
-  <form method="POST" action="/api/users/register">
-    <label for="name">Nombre</label>
-    <input type="text" name="name" />
+  <form method="POST" action="/api/users/register" class="formRegister">
+      <label for="name">Nombre</label>
+      <input type="text" name="name" />
 
-    <label for="surname">Apellido</label>
-    <input type="text" name="surname" />
+      <label for="surname">Apellido</label>
+      <input type="text" name="surname" />
 
-    <label for="email">Email</label>
-    <input type="email" name="email" />
+      <label for="email">Email</label>
+      <input type="email" name="email" />
 
-    <label for="password">Password</label>
-    <input type="password" name="password" />
+      <label for="password">Password</label>
+      <input type="password" name="password" />
 
-    <label for="role">Role</label>
-    {{! <input type="text" name="role" />}}
-    <select name="role" id="role">
-      <option value="user">User</option>
-      <option value="admin">Admin</option>
-      <option value="premium">Premium</option>
-    </select>
+      <label for="role">Role</label>
+      <select name="role" id="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+        <option value="premium">Premium</option>
 
-    <button type="submit">Registrarse</button>
-  </form>
+      </select>
+      <button type="submit">Registrarse</button>
+    </form>
 
 </div>
